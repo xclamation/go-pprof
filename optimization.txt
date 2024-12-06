@@ -1,0 +1,24 @@
+1) Не должны считывать всё сразу, нам достаточно построчно
+fileContents, err := io.ReadAll(file)
+if err != nil {
+    panic(err)
+}
+
+2) Лучше использовать strings.Contains("@")
+r := regexp.MustCompile("@")
+r.ReplaceAllString — это метод объекта regexp.Regexp, который заменяет все вхождения, соответствующие регулярному выражению r, на строку " [at] ".
+В данном случае, регулярное выражение r ищет символ @.
+
+10ms      1.03s     75:                   if ok, err := regexp.MatchString("Android", browser); ok && err == nil {
+880ms     97:                   if ok, err := regexp.MatchString("MSIE", browser); ok && err == nil {
+3) Можно использовать easyjson
+810ms err := json.Unmarshal([]byte(line), &user)
+
+4) Лучше использовать strings.ReplaceAll(user["email"].(string), "@", " [at] ")
+   email := r.ReplaceAllString(user["email"].(string), " [at] ")
+         .          .    115:           }
+    надо чтобы все знаки @ в email заменились на строку
+    
+
+5) можно сразу дать capacity, если мы знаем, что у нас будет 1000 пользователей (как в тестовых данных)
+users := make([]map[string]interface{}, 0)
